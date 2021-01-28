@@ -39,7 +39,7 @@ fun List<DatabaseAsteroid>.asDomainModel(): List<Asteroid> {
         Asteroid(
             id = it.id,
             codename = it.codename,
-            closeApproachDate =  dateToStr(it.closeApproachDate, Constants.API_QUERY_DATE_FORMAT),
+            closeApproachDate =  dateToString(it.closeApproachDate, Constants.API_QUERY_DATE_FORMAT),
             absoluteMagnitude = it.absoluteMagnitude,
             estimatedDiameter = it.estimatedDiameter,
             relativeVelocity = it.relativeVelocity,
@@ -69,7 +69,7 @@ fun NetworkAsteroidContainer.asDatabaseModel(): Array<DatabaseAsteroid> {
         DatabaseAsteroid(
             id = it.id,
             codename = it.codename,
-            closeApproachDate = strToDate(it.closeApproachDate, Constants.API_QUERY_DATE_FORMAT),
+            closeApproachDate = stringToDate(it.closeApproachDate, Constants.API_QUERY_DATE_FORMAT),
             absoluteMagnitude = it.absoluteMagnitude,
             estimatedDiameter = it.estimatedDiameter,
             relativeVelocity = it.relativeVelocity,

@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.*
 import com.udacity.asteroidradar.database.getDatabase
-import com.udacity.asteroidradar.repository.AsteroidsRepository
+import com.udacity.asteroidradar.repository.AsteroidsListRepository
 import kotlinx.coroutines.launch
 
 
@@ -14,10 +14,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     enum class TimeZone {ONE, SEVEN} //today or a week period filteration
     val period = MutableLiveData(TimeZone.SEVEN)
     private val database = getDatabase(application)
-    private val asteroidsRepository = AsteroidsRepository(database)
+    private val asteroidsRepository = AsteroidsListRepository(database)
     val pictureOfDay = asteroidsRepository.pictureOfDay
     val networkStatus =  asteroidsRepository.status
-    val txStatus =  asteroidsRepository.txStatus
+    val txStatus =  asteroidsRepository.txtStatus
 
 
     init{
@@ -33,8 +33,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         Transformations.map(period) { period ->
             period?.let {
                 when (period) {
-                    TimeZone.ONE   -> asteroidsRepository.asteroidsListToday
-                    TimeZone.SEVEN -> asteroidsRepository.asteroidsListUpToFuture
+                    TimeZone.ONE   -> asteroidsRepository.asteroidListToday
+                    TimeZone.SEVEN -> asteroidsRepository.asteroidsListWeek
                 }
             }
         }

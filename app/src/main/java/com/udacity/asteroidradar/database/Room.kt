@@ -49,3 +49,7 @@ fun getDatabase(context: Context): AsteroidsDatabase{
     return INSTANCE
 }
 
+
+// get list of asteroids according to date
+fun AsteroidsDatabase.getToday() = asteroidDao.getAsteroids(getDate(days = -1), getDate(days = 0)) //today
+fun AsteroidsDatabase.getWeek() = asteroidDao.getAsteroids(getDate(days = -1), getDate(days = Constants.DEFAULT_END_DATE_DAYS))
