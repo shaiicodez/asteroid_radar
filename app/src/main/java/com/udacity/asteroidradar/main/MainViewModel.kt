@@ -11,10 +11,13 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    enum class TimeZone {ONE, SEVEN} //today or a week period
+    enum class TimeZone {ONE, SEVEN} //today or a week period filteration
     val period = MutableLiveData(TimeZone.SEVEN)
     private val database = getDatabase(application)
     private val asteroidsRepository = AsteroidsRepository(database)
+    val pictureOfDay = asteroidsRepository.pictureOfDay
+    val networkStatus =  asteroidsRepository.status
+    val txStatus =  asteroidsRepository.txStatus
 
 
     init{
@@ -26,7 +29,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-
     val asteroidsList =
         Transformations.map(period) { period ->
             period?.let {
@@ -36,11 +38,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 }
             }
         }
-
-    val pictureOfDay = asteroidsRepository.pictureOfDay
-
-    val networkStatus =  asteroidsRepository.status
-    val txStatus =  asteroidsRepository.txStatus
 
 
     // Navigation Controls

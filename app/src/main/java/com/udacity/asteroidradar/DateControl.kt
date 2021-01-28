@@ -10,9 +10,9 @@ import java.util.*
 val startDate = "2019-09-14"
 val endDate = "2021-01-11"
 
-fun AsteroidsDatabase.calculatePeriod(upToDays: Int) = asteroidDao.getAsteroids(getDate(daysFromToday = -1), getDate(daysFromToday = upToDays))
-fun AsteroidsDatabase.getToday() = calculatePeriod(upToDays = 0)
-fun AsteroidsDatabase.getUpToEndDate() = calculatePeriod(upToDays = Constants.DEFAULT_END_DATE_DAYS)
+fun AsteroidsDatabase.getToday() = asteroidDao.getAsteroids(getDate(daysFromToday = -1), getDate(daysFromToday = 0))
+fun AsteroidsDatabase.getUpToEndDate() = asteroidDao.getAsteroids(getDate(daysFromToday = -1), getDate(daysFromToday = Constants.DEFAULT_END_DATE_DAYS))
+
 
 // get system current date
 fun getDate(daysFromToday: Int): Date {
@@ -22,6 +22,7 @@ fun getDate(daysFromToday: Int): Date {
     return calendar.time
 }
 
+//conversion methods of date
 fun getDaysFromNowStr(daysFromToday: Int, pattern: String = Constants.API_QUERY_DATE_FORMAT): String{
     val sdf = SimpleDateFormat(pattern)
     return sdf.format(getDate(daysFromToday))
