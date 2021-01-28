@@ -8,8 +8,6 @@ import com.udacity.asteroidradar.api.NasaApi
 import com.udacity.asteroidradar.api.NasaApiStatus
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidsDatabase
-import com.udacity.asteroidradar.database.getToday
-import com.udacity.asteroidradar.database.getUpToEndDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -25,22 +23,19 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
 //            it?.asDomainModel()
 //        }
 
-    val asteroidsListUpToEndDate: LiveData<List<Asteroid>> =
-        Transformations.map(database.getUpToEndDate()){
-            it?.asDomainModel()
-        }
-
     val asteroidsListToday: LiveData<List<Asteroid>> =
         Transformations.map(database.getToday()){
             it?.asDomainModel()
         }
 
+    val asteroidsListUpToFuture: LiveData<List<Asteroid>> =
+        Transformations.map(database.getUpToEndDate()){
+            it?.asDomainModel()
+        }
+
+
     var status = MutableLiveData<NasaApiStatus>(NasaApiStatus.LOADING)
-
     val txStatus = MutableLiveData<String>()
-
-    private val fromDate = getDaysFromNowStr(0, Constants.API_QUERY_DATE_FORMAT)
-    private val toDate = getDaysFromNowStr(Constants.DEFAULT_END_DATE_DAYS, Constants.API_QUERY_DATE_FORMAT)
 
     /**
      * Fetch Data based on period - DEFAULT_END_DATE_DAYS
@@ -50,13 +45,14 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
             try {
                 status.value = NasaApiStatus.LOADING
 
-                // Get String json response via retrofit with scalars converter
-                val stringResponse = NasaApi.retrofitService.getAsteroidList(fromDate, toDate, Constants.API_KEY)
+                // Get String json response
+                val stringResponse = NasaApi.retrofitService.getAsteroidList(
+                    getDaysFromNowStr(0, Constants.API_QUERY_DATE_FORMAT),
+                    getDaysFromNowStr(Constants.DEFAULT_END_DATE_DAYS, Constants.API_QUERY_DATE_FORMAT),
+                    Constants.API_KEY)
 
-                // Transform the string response to json object
+                // convert string response to json object
                 val jsonObject = JSONObject(stringResponse)
-
-                // Get an ArrayList<NetworkAsteroids> from the JSONObject
                 val arrayListOfNetworkAsteroids = parseAsteroidsJsonResult(jsonObject)
 
                 // set at the asteroidsList dataclass the ArrayList<NetworkAsteroids> received

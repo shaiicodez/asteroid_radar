@@ -10,16 +10,14 @@ import kotlinx.coroutines.launch
 
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-    enum class PeriodDays {ONE, SEVEN}
+
+    enum class TimeZone {ONE, SEVEN} //today or a week period
+    val period = MutableLiveData(TimeZone.SEVEN)
     private val database = getDatabase(application)
     private val asteroidsRepository = AsteroidsRepository(database)
 
 
     init{
-        refreshData()
-    }
-
-    fun refreshData(){
         viewModelScope.launch {
             asteroidsRepository.apply {
                 refreshAsteroids()
@@ -29,14 +27,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
-    val daysIncluded = MutableLiveData(PeriodDays.SEVEN)
-
     val asteroidsList =
-        Transformations.map(daysIncluded) { days ->
-            days?.let {
-                when (days) {
-                    PeriodDays.ONE   -> asteroidsRepository.asteroidsListToday
-                    PeriodDays.SEVEN -> asteroidsRepository.asteroidsListUpToEndDate
+        Transformations.map(period) { period ->
+            period?.let {
+                when (period) {
+                    TimeZone.ONE   -> asteroidsRepository.asteroidsListToday
+                    TimeZone.SEVEN -> asteroidsRepository.asteroidsListUpToFuture
                 }
             }
         }

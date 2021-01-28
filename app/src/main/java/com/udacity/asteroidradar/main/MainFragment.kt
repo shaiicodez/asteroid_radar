@@ -57,8 +57,11 @@ class MainFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId){
-            R.id.show_all_menu -> viewModel.daysIncluded.value = MainViewModel.PeriodDays.SEVEN
-            R.id.show_today_menu -> viewModel.daysIncluded.value = MainViewModel.PeriodDays.ONE
+            // week period
+            R.id.show_all_menu -> viewModel.period.value = MainViewModel.TimeZone.SEVEN
+
+            //only today
+            R.id.show_today_menu -> viewModel.period.value = MainViewModel.TimeZone.ONE
         }
 
         return true

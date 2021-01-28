@@ -49,10 +49,3 @@ fun getDatabase(context: Context): AsteroidsDatabase{
     return INSTANCE
 }
 
-// STEP 4:
-fun AsteroidsDatabase.getUpToRandom(upToDays: Int) =
-    asteroidDao.getAsteroids(getDaysFromNowDate(daysFromToday = -1),
-        getDaysFromNowDate(daysFromToday = upToDays))
-
-fun AsteroidsDatabase.getToday() = getUpToRandom(upToDays = 0)
-fun AsteroidsDatabase.getUpToEndDate() = getUpToRandom(upToDays = Constants.DEFAULT_END_DATE_DAYS)
