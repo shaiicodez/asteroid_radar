@@ -79,8 +79,6 @@ class AsteroidsListRepository(private val database : AsteroidsDatabase) {
     suspend fun refreshPictureOfTheDay(){
         withContext(Dispatchers.IO){
             try {
-                status.value = NasaApiStatus.LOADING
-
                 //get the pod from server
                 val pod = NasaApi.retrofitService.getPictureOfDay(Constants.API_KEY)
 
