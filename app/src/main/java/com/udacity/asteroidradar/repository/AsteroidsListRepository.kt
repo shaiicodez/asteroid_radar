@@ -12,7 +12,6 @@ import com.udacity.asteroidradar.database.getToday
 import com.udacity.asteroidradar.database.getWeek
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.Dispatcher
 import org.json.JSONObject
 
 // fetch the data from the negtwrok and store them on local disk
